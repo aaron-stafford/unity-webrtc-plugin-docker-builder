@@ -1,0 +1,5 @@
+Requires approximately 20gig disk space.
+
+sudo ./build.sh # To build the image.
+
+sudo ./run.sh # To execute the script using the image.
