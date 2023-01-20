@@ -8,11 +8,11 @@ RUN apt install -y git
 RUN apt install -y unzip
 RUN apt install -y build-essential
 RUN apt install -y zip
-RUN curl -L https://github.com/Kitware/CMake/releases/download/v3.24.1/cmake-3.24.1-linux-x86_64.sh > cmake-3.24.1-linux-x86_64.sh
+ADD https://github.com/Kitware/CMake/releases/download/v3.24.1/cmake-3.24.1-linux-x86_64.sh cmake-3.24.1-linux-x86_64.sh
 RUN mkdir /opt/cmake
 RUN bash cmake-3.24.1-linux-x86_64.sh --prefix=/opt/cmake --skip-license
 ENV PATH="$PATH:/opt/cmake/bin"
 ADD https://dl.google.com/android/repository/android-ndk-r22b-linux-x86_64.zip android-ndk-r22b-linux-x86_64.zip
 RUN unzip android-ndk-r22b-linux-x86_64.zip
-ENV ANDROID_NDK=android-ndk-r22b-linux-x86_64
-#CMD ["./script/runner.sh"]
+ENV ANDROID_NDK=/android-ndk-r22b
+CMD ["./script/runner.sh"]
