@@ -1,3 +1,9 @@
+An example of building the x86_64 version of the Unity WebRTC plugin with a
+docker container. The current implementation relies on the webrtc-android.zip
+being present in a "result" folder. This is just a temporary mechanism to pass
+in the zip file to the script. A more suitable method needs to be explored
+further.
+
 Requires approximately 20gig disk space.
 
 sudo ./build.sh # To build the image.
