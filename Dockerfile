@@ -4,6 +4,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt update
 RUN apt install -y curl 
+RUN apt install -y python-is-python3
 RUN apt install -y git 
 RUN apt install -y unzip
 RUN apt install -y build-essential
