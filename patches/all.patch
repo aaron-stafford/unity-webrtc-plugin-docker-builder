@@ -1,12 +1,9 @@
 diff --git a/BuildScripts~/build_plugin_android.sh b/BuildScripts~/build_plugin_android.sh
-index fb0cff8..65b8131 100755
+index fb0cff8..d9a1a11 100755
 --- a/BuildScripts~/build_plugin_android.sh
 +++ b/BuildScripts~/build_plugin_android.sh
-@@ -1,35 +1,38 @@
- #!/bin/bash -eu
- 
--export LIBWEBRTC_DOWNLOAD_URL=https://github.com/Unity-Technologies/com.unity.webrtc/releases/download/M107/webrtc-android.zip
-+#export LIBWEBRTC_DOWNLOAD_URL=https://github.com/Unity-Technologies/com.unity.webrtc/releases/download/M107/webrtc-android.zip
+@@ -3,33 +3,36 @@
+ export LIBWEBRTC_DOWNLOAD_URL=https://github.com/Unity-Technologies/com.unity.webrtc/releases/download/M107/webrtc-android.zip
  export SOLUTION_DIR=$(pwd)/Plugin~
  export PLUGIN_DIR=$(pwd)/Runtime/Plugins/Android
 -export ARCH_ABI=arm64-v8a
@@ -27,7 +24,7 @@ index fb0cff8..65b8131 100755
 -  -D CMAKE_ANDROID_NDK=$ANDROID_NDK \
 -  -D CMAKE_BUILD_TYPE=Release \
 -  -D CMAKE_ANDROID_STL_TYPE=c++_static
-+for target_cpu in "arm64-v8a" "x86_64"
++for ARCH_ABI in "arm64-v8a" "x86_64"
 +do
 +  # Build UnityRenderStreaming Plugin
 +  cmake . \
@@ -35,7 +32,7 @@ index fb0cff8..65b8131 100755
 +    -D CMAKE_SYSTEM_NAME=Android \
 +    -D CMAKE_ANDROID_API_MIN=24 \
 +    -D CMAKE_ANDROID_API=24 \
-+    -D CMAKE_ANDROID_ARCH_ABI=${target_cpu} \
++    -D CMAKE_ANDROID_ARCH_ABI=$ARCH_ABI \
 +    -D CMAKE_ANDROID_NDK=$ANDROID_NDK \
 +    -D CMAKE_BUILD_TYPE=Release \
 +    -D CMAKE_ANDROID_STL_TYPE=c++_static
@@ -59,10 +56,31 @@ index fb0cff8..65b8131 100755
 +  # libwebrtc.so move into libwebrtc.aar
 +  cp -f $SOLUTION_DIR/webrtc/lib/libwebrtc.aar $PLUGIN_DIR
 +  pushd $PLUGIN_DIR
-+  mkdir -p jni/${target_cpu}
-+  mv libwebrtc.so jni/${target_cpu}
-+  zip -g libwebrtc.aar jni/${target_cpu}/libwebrtc.so
++  mkdir -p jni/$ARCH_ABI
++  mv libwebrtc.so jni/$ARCH_ABI
++  zip -g libwebrtc.aar jni/$ARCH_ABI/libwebrtc.so
 +  rm -r jni
 +  popd
 +  rm -rf build
 +done
+diff --git a/Plugin~/cmake/FindWebRTC.cmake b/Plugin~/cmake/FindWebRTC.cmake
+index 55fe5b3..a9abb0e 100644
+--- a/Plugin~/cmake/FindWebRTC.cmake
++++ b/Plugin~/cmake/FindWebRTC.cmake
+@@ -26,6 +26,9 @@ if(Windows OR Linux)
+   set(WEBRTC_LIBRARY_DIR ${WEBRTC_LIBRARY_DIR}/${SYSTEM_PROCESSOR})
+ endif()
+ if(Android)
++  if(CMAKE_ANDROID_ARCH_ABI STREQUAL "x86_64")
++    set(CMAKE_ANDROID_ARCH "x64")
++  endif()
+   set(WEBRTC_LIBRARY_DIR ${WEBRTC_LIBRARY_DIR}/${CMAKE_ANDROID_ARCH})
+ endif()
+ 
+@@ -54,4 +57,4 @@ find_package_handle_standard_args(WebRTC
+   WEBRTC_LIBRARY_DEBUG
+   WEBRTC_LIBRARY_RELEASE 
+   WEBRTC_INCLUDE_DIR
+-)
+\ No newline at end of file
++)
