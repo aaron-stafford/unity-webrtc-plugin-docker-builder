@@ -8,4 +8,6 @@ Requires approximately 20gig disk space.
 
 sudo ./build.sh # To build the image.
 
+sudo ./run-debug.sh # To launch the image but not run the script.
+
 sudo ./run.sh # To execute the script using the image.
