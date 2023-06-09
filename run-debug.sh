@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 set -e
 set -x
-docker run --platform=linux/amd64 -v $(pwd)/patches:/patches -v $(pwd)/script:/script -v /result:/result -it build_unity_webrtc_plugin_android
+docker run --platform=linux/amd64 -v $(pwd)/script:/script -v /result:/result -it build_unity_webrtc_plugin_android
