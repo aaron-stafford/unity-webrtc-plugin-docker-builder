@@ -3,6 +3,6 @@ set -e
 set -x
 git clone --branch issue-802-part-2-workaround https://github.com/aaron-stafford/com.unity.webrtc --depth=1
 cd com.unity.webrtc
-cp /result/webrtc-android.zip webrtc.zip
+cp result/webrtc-android.zip webrtc.zip
 bash -e BuildScripts~/build_plugin_android.sh
 cp Runtime/Plugins/Android/libwebrtc.aar /result/.
